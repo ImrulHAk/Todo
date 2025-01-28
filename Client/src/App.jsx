@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 const App = () => {
   const [task, setTask] = useState("");
   const [todos, setTodos] = useState([]);
+  const [edit, setEdit] = useState(false);
+  const [update, setUpdate] = useState("");
 
   const handleTask = (e) => {
     setTask(e.target.value);
@@ -41,6 +43,10 @@ const App = () => {
     });
   };
 
+  const handleedit = (id) => {
+    console.log("click", id);
+  };
+
   return (
     <>
       <div className="h-100 w-full flex items-center justify-center bg-teal-lightest font-sans">
@@ -67,7 +73,10 @@ const App = () => {
                 <ul>
                   <li>
                     {item.name}
-                    <button className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded text-green">
+                    <button
+                      onClick={() => handleedit(item._id)}
+                      className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded text-green"
+                    >
                       Edit
                     </button>
                     <button

@@ -46,6 +46,18 @@ app.delete("/deletetodo/:id", async (req, res) => {
     .send({ success: true, msg: "delete success", data: deletetodo });
 });
 
+// update todos
+app.patch("/updatetodo/:id", async (req, res) => {
+  let { id } = req.params;
+  console.log(id);
+  let updatetodo = await user.findOneAndUpdate({
+    _id: id,
+  });
+  res
+    .status(200)
+    .send({ success: true, msg: "update success", data: updatetodo });
+});
+
 app.listen(port || 8000, () => {
   console.log(`server runing in this port ${port}`);
 });
