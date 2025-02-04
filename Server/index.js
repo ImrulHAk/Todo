@@ -37,7 +37,6 @@ app.get("/alltodos", async (req, res) => {
 // delete todos
 app.delete("/deletetodo/:id", async (req, res) => {
   let { id } = req.params;
-  console.log(id);
   let deletetodo = await user.findOneAndDelete({
     _id: id,
   });
@@ -49,10 +48,12 @@ app.delete("/deletetodo/:id", async (req, res) => {
 // update todos
 app.patch("/updatetodo/:id", async (req, res) => {
   let { id } = req.params;
-  console.log(id);
-  let updatetodo = await user.findOneAndUpdate({
-    _id: id,
-  });
+  let { name } = req.body;
+  let updatetodo = await user.findOneAndUpdate(
+    { _id: id },
+    { name },
+    { new: true }
+  );
   res
     .status(200)
     .send({ success: true, msg: "update success", data: updatetodo });

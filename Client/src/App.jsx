@@ -29,7 +29,7 @@ const App = () => {
       })
       .then((data) => {
         console.log(data);
-        alert("add successfull");
+        alert("Add successfull");
         setTask("");
       })
       .catch((err) => {
@@ -40,7 +40,7 @@ const App = () => {
   const handledelete = (id) => {
     axios.delete(`http://localhost:8000/deletetodo/${id}`).then((data) => {
       console.log(data);
-      alert("data deleted");
+      alert("Data deleted");
     });
   };
 
@@ -52,19 +52,22 @@ const App = () => {
     console.log("click", id);
   };
 
-  const handlesubmit = () => {
-    axios.patch(`http://localhost:8000/updatetodo/${editid}`).then((data) => {
-      console.log(data);
-      setEdit(false);
-      setUpdate("");
-      setEditid(null);
-    });
+  const handlesubmit = (id) => {
+    axios
+      .patch(`http://localhost:8000/updatetodo/${id}`, { name: update })
+      .then((data) => {
+        console.log(data);
+        setEdit(false);
+        setUpdate("");
+        setEditid(null);
+        gettodos();
+      });
     console.log("click");
   };
 
   return (
     <>
-      <div className="h-100 w-full flex items-center justify-center font-sans">
+      <div className="h-full w-full flex items-center justify-center font-sans ">
         <div className="bg-white rounded shadow border-2 p-6 m-4 w-full lg:w-3/4 lg:max-w-lg relative">
           <div className="mb-4">
             <h1 className="text-2xl font-bold">Todo List</h1>
@@ -85,19 +88,22 @@ const App = () => {
           </div>
           <div>
             {todos.map((item) => (
-              <div className="flex mb-4 items-center">
+              <div className="mb-4 items-center">
                 <ul>
-                  <li key={item._id} className=" flex items-center justify-between">
-                    {item.name}
+                  <li
+                    key={item._id}
+                    className=" flex items-center justify-between"
+                  >
+                    <span className="text-lg font-semibold">{item.name}</span>
                     <button
                       onClick={() => handleupdate(item._id)}
-                      className="flex-no-shrink p-2 ml-4 mr-2 bg-green-500 rounded text-white"
+                      className="flex-no-shrink p-2 ml-auto mr-2 bg-green-500 rounded text-white"
                     >
                       Update
                     </button>
                     <button
                       onClick={() => handledelete(item._id)}
-                      className="flex-no-shrink p-2 ml-2 bg-red-500 rounded text-white"
+                      className="flex-no-shrink p-2 bg-red-500 rounded text-white"
                     >
                       Delete
                     </button>
@@ -108,7 +114,7 @@ const App = () => {
           </div>
         </div>
         {edit && (
-          <div className=" absolute top-32 bg-teal-100 border-2 border-gray-700 rounded p-6">
+          <div className=" absolute top-36 bg-teal-100 border-2 border-gray-700 rounded p-6">
             <h2 className="mb-4 text-2xl font-bold">Update box</h2>
             <input
               onChange={(e) => setUpdate(e.target.value)}
@@ -118,7 +124,7 @@ const App = () => {
               placeholder="Edit text"
             />
             <button
-              onClick={handlesubmit}
+              onClick={() => handlesubmit(editid)}
               className="flex-no-shrink p-2 mt-2 bg-green-500 rounded text-white"
             >
               Submit
